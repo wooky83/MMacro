@@ -11,6 +11,7 @@ import MMacroMacros
 let testMacros: [String: Macro.Type] = [
     "stringify": StringifyMacro.self,
     "RelayAccessor": RelayAccessor.self,
+    "ReuseIdentifier": ReuseIdentifierMacro.self,
 ]
 #endif
 
@@ -92,5 +93,71 @@ final class MMacroTests: XCTestCase {
         #else
             throw XCTSkip("macros are only supported when running tests for the host platform")
         #endif
+    }
+    
+    func testCombineComplexGenericType() throws {
+           #if canImport(MMacroMacros)
+           assertMacroExpansion(
+               """
+               @RelayAccessor
+               private let presetModelsSubject = CurrentValueSubject<[DiscoverCardModel], Never>((0..<6).map { _ in DiscoverCardModel() })
+               """,
+               expandedSource: """
+               private let presetModelsSubject = CurrentValueSubject<[DiscoverCardModel], Never>((0..<6).map { _ in DiscoverCardModel() })
+
+               var presetModels: AnyPublisher<[DiscoverCardModel], Never> {
+                   presetModelsSubject.eraseToAnyPublisher()
+               }
+               
+               var presetModelsValue: [DiscoverCardModel] {
+                   presetModelsSubject.value
+               }
+               """,
+               macros: testMacros
+           )
+           #else
+           throw XCTSkip("macros are only supported when running tests for the host platform")
+           #endif
+       }
+    
+    func testPassthroughSubjectMacro() throws {
+        #if canImport(MMacroMacros)
+        assertMacroExpansion(
+            """
+            @RelayAccessor
+            private let notificationSubject = PassthroughSubject<Notification, Never>()
+            """,
+            expandedSource: """
+            private let notificationSubject = PassthroughSubject<Notification, Never>()
+
+            var notification: AnyPublisher<Notification, Never> {
+                notificationSubject.eraseToAnyPublisher()
+            }
+            """,
+            macros: testMacros
+        )
+        #else
+        throw XCTSkip("macros are only supported when running tests for the host platform")
+        #endif
+    }
+    
+    func testExpanded() {
+        assertMacroExpansion(
+               """
+               @ReuseIdentifier
+               class CarouselCollectionViewCell {
+               }
+               """,
+               expandedSource: """
+               
+               class CarouselCollectionViewCell {
+               
+                   static var reuseIdentifier: String {
+                       "CarouselCollectionViewCell"
+                   }
+               }
+               """,
+               macros: testMacros
+        )
     }
 }

@@ -26,3 +26,6 @@ public macro stringify<T>(_ value: T) -> (T, String) = #externalMacro(module: "M
 ///
 @attached(peer, names: arbitrary)
 public macro RelayAccessor() = #externalMacro(module: "MMacroMacros", type: "RelayAccessor")
+
+@attached(member, names: named(reuseIdentifier))
+public macro ReuseIdentifier() = #externalMacro(module: "MMacroMacros", type: "ReuseIdentifierMacro")

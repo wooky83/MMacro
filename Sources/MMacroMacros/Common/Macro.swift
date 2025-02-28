@@ -8,5 +8,6 @@ struct MMacroPlugin: CompilerPlugin {
     let providingMacros: [Macro.Type] = [
         StringifyMacro.self,
         RelayAccessor.self,
+        ReuseIdentifierMacro.self,
     ]
 }
