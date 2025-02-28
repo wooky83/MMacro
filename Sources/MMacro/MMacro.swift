@@ -24,5 +24,5 @@ public macro stringify<T>(_ value: T) -> (T, String) = #externalMacro(module: "M
 ///     var messageObservable: Observable<String> { messageSbj.asObservable() }
 ///     var messageValue: String { messageSbj.value }
 ///
-@attached(peer)
+@attached(peer, names: arbitrary)
 public macro RelayAccessor() = #externalMacro(module: "MMacroMacros", type: "RelayAccessor")
