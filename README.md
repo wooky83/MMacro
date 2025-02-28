@@ -1,2 +1,2 @@
-# MMacro
-My Swift Macro
+# mel-macro
+Mel iOS Macro
