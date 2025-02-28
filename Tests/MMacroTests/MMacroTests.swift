@@ -105,7 +105,7 @@ final class MMacroTests: XCTestCase {
                expandedSource: """
                private let presetModelsSubject = CurrentValueSubject<[DiscoverCardModel], Never>((0..<6).map { _ in DiscoverCardModel() })
 
-               var presetModels: AnyPublisher<[DiscoverCardModel], Never> {
+               var presetModelsObservable: AnyPublisher<[DiscoverCardModel], Never> {
                    presetModelsSubject.eraseToAnyPublisher()
                }
                
@@ -130,7 +130,7 @@ final class MMacroTests: XCTestCase {
             expandedSource: """
             private let notificationSubject = PassthroughSubject<Notification, Never>()
 
-            var notification: AnyPublisher<Notification, Never> {
+            var notificationObservable: AnyPublisher<Notification, Never> {
                 notificationSubject.eraseToAnyPublisher()
             }
             """,

@@ -126,7 +126,7 @@ public struct RelayAccessor: PeerMacro {
             // Combine Subject 타입에 대한 Publisher 프로퍼티 생성
             if isCombineSubject {
                 let publisherProperty = """
-                var \(baseName): AnyPublisher<\(valueType), Never> {
+                var \(baseName)Observable: AnyPublisher<\(valueType), Never> {
                     \(originalName).eraseToAnyPublisher()
                 }
                 """
