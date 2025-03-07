@@ -1,3 +1,4 @@
+import Foundation
 // The Swift Programming Language
 // https://docs.swift.org/swift-book
 
@@ -29,3 +30,7 @@ public macro RelayAccessor() = #externalMacro(module: "MMacroMacros", type: "Rel
 
 @attached(member, names: named(reuseIdentifier))
 public macro ReuseIdentifier() = #externalMacro(module: "MMacroMacros", type: "ReuseIdentifierMacro")
+
+@attached(peer, names: arbitrary)
+@attached(accessor)
+public macro AssociatedObject(_ policy: objc_AssociationPolicy) = #externalMacro(module: "MMacroMacros", type: "AssociatedObjectMacro")

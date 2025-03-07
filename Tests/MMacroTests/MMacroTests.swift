@@ -160,4 +160,80 @@ final class MMacroTests: XCTestCase {
                macros: testMacros
         )
     }
+    
+    func testAssociatedObjectMacro() {
+        assertMacroExpansion(
+            #"""
+            class AssociatedClass { }
+            extension AssociatedClass {
+                @AssociatedObject(.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                var intValue: Int
+                @AssociatedObject(.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                var StringValue: String = "Hello World!!"
+            }
+            """#,
+            expandedSource: #"""
+            class AssociatedClass { }
+            extension AssociatedClass {
+                var intValue: Int {
+                    get {
+                      if let associatedObject = objc_getAssociatedObject(
+                          self,
+                          &Self.__associated_intValueKey
+                      ) as? Int {
+                          return associatedObject
+                      }
+                      let variable = Int()
+                      objc_setAssociatedObject(
+                          self,
+                          &Self.__associated_intValueKey,
+                          variable,
+                          .OBJC_ASSOCIATION_RETAIN_NONATOMIC
+                      )
+                      return variable
+                    }
+                    set {
+                      objc_setAssociatedObject(
+                          self,
+                          &Self.__associated_intValueKey,
+                          newValue,
+                          .OBJC_ASSOCIATION_RETAIN_NONATOMIC
+                      )
+                    }
+                }
+            
+                fileprivate static var __associated_intValueKey: UInt8 = 0
+                var StringValue: String {
+                    get {
+                      if let associatedObject = objc_getAssociatedObject(
+                          self,
+                          &Self.__associated_StringValueKey
+                      ) as? String  {
+                          return associatedObject
+                      }
+                      let variable = "Hello World!!"
+                      objc_setAssociatedObject(
+                          self,
+                          &Self.__associated_StringValueKey,
+                          variable,
+                          .OBJC_ASSOCIATION_RETAIN_NONATOMIC
+                      )
+                      return variable
+                    }
+                    set {
+                      objc_setAssociatedObject(
+                          self,
+                          &Self.__associated_StringValueKey,
+                          newValue,
+                          .OBJC_ASSOCIATION_RETAIN_NONATOMIC
+                      )
+                    }
+                }
+
+                fileprivate static var __associated_StringValueKey: UInt8 = 0
+            }
+            """#,
+            macros: ["AssociatedObject": AssociatedObjectMacro.self]
+        )
+    }
 }

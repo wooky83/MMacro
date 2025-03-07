@@ -147,16 +147,3 @@ public struct RelayAccessor: PeerMacro {
         return results
     }
 }
-
-// 에러 정의
-struct MacroError: Error, CustomStringConvertible {
-    var message: String
-    
-    init(_ message: String) {
-        self.message = message
-    }
-    
-    var description: String {
-        return message
-    }
-}
