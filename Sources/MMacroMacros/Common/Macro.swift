@@ -9,5 +9,6 @@ struct MMacroPlugin: CompilerPlugin {
         StringifyMacro.self,
         RelayAccessor.self,
         ReuseIdentifierMacro.self,
+        AssociatedObjectMacro.self,
     ]
 }
