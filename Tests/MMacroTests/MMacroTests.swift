@@ -59,11 +59,11 @@ final class MMacroTests: XCTestCase {
                 expandedSource: """
                 private let messageSbj = BehaviorRelay<String>(value: "")
                 
-                var messageObservable: Observable<String> {
+                public var messageObservable: Observable<String> {
                     messageSbj.asObservable()
                 }
                 
-                var messageValue: String {
+                public var messageValue: String {
                     messageSbj.value
                 }
                 """,
@@ -84,7 +84,7 @@ final class MMacroTests: XCTestCase {
                 expandedSource: """
                 private let eventSbj = PublishRelay<Event>()
                 
-                var eventObservable: Observable<Event> {
+                public var eventObservable: Observable<Event> {
                     eventSbj.asObservable()
                 }
                 """,
@@ -105,11 +105,11 @@ final class MMacroTests: XCTestCase {
                expandedSource: """
                private let presetModelsSubject = CurrentValueSubject<[DiscoverCardModel], Never>((0..<6).map { _ in DiscoverCardModel() })
 
-               var presetModelsObservable: AnyPublisher<[DiscoverCardModel], Never> {
+               public var presetModelsObservable: AnyPublisher<[DiscoverCardModel], Never> {
                    presetModelsSubject.eraseToAnyPublisher()
                }
                
-               var presetModelsValue: [DiscoverCardModel] {
+               public var presetModelsValue: [DiscoverCardModel] {
                    presetModelsSubject.value
                }
                """,
@@ -130,7 +130,7 @@ final class MMacroTests: XCTestCase {
             expandedSource: """
             private let notificationSubject = PassthroughSubject<Notification, Never>()
 
-            var notificationObservable: AnyPublisher<Notification, Never> {
+            public var notificationObservable: AnyPublisher<Notification, Never> {
                 notificationSubject.eraseToAnyPublisher()
             }
             """,

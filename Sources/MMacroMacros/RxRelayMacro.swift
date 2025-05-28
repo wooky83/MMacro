@@ -106,7 +106,7 @@ public struct RelayAccessor: PeerMacro {
             // RxSwift Relay 타입에 대한 Observable 프로퍼티 생성
             if isRxRelay {
                 let observableProperty = """
-                var \(baseName)Observable: Observable<\(valueType)> {
+                public var \(baseName)Observable: Observable<\(valueType)> {
                     \(originalName).asObservable()
                 }
                 """
@@ -115,7 +115,7 @@ public struct RelayAccessor: PeerMacro {
                 // 값 프로퍼티는 BehaviorRelay에만 생성
                 if typeDescription.contains("BehaviorRelay") {
                     let valueProperty = """
-                    var \(baseName)Value: \(valueType) {
+                    public var \(baseName)Value: \(valueType) {
                         \(originalName).value
                     }
                     """
@@ -126,7 +126,7 @@ public struct RelayAccessor: PeerMacro {
             // Combine Subject 타입에 대한 Publisher 프로퍼티 생성
             if isCombineSubject {
                 let publisherProperty = """
-                var \(baseName)Observable: AnyPublisher<\(valueType), Never> {
+                public var \(baseName)Observable: AnyPublisher<\(valueType), Never> {
                     \(originalName).eraseToAnyPublisher()
                 }
                 """
@@ -135,7 +135,7 @@ public struct RelayAccessor: PeerMacro {
                 // 값 프로퍼티는 CurrentValueSubject에만 생성
                 if typeDescription.contains("CurrentValueSubject") {
                     let valueProperty = """
-                    var \(baseName)Value: \(valueType) {
+                    public var \(baseName)Value: \(valueType) {
                         \(originalName).value
                     }
                     """
